@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reward Points Calculator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .container {
+        max-width: 400px;
+        margin: auto;
+      }
+      label {
+        display: block;
+        margin: 10px 0 5px;
+      }
+      input[type='number'] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+      .result {
+        margin-top: 20px;
+        padding: 10px;
+        background: #f0f0f0;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Reward Points Calculator</h1>
+
+      <label for="ankeny">
+        Ankeny Points to Next Reward:
+        <input type="number" id="ankeny" placeholder="Enter points needed for Ankeny" min="0" max="500" oninput="calculateReward()" />
+      </label>
+
+      <label for="waukee">
+        Waukee Points to Next Reward:
+        <input type="number" id="waukee" placeholder="Enter points needed for Waukee" min="0" max="500" oninput="calculateReward()" />
+      </label>
+
+      <div id="output" class="result"></div>
+    </div>
+
+    <script>
+      function calculateReward() {
+        // Get the input values; default to 0 if not entered.
+        var ankenyInput = parseInt(document.getElementById('ankeny').value) || 0;
+        var waukeeInput = parseInt(document.getElementById('waukee').value) || 0;
+
+        // Calculate points already earned per store.
+        // Each system tells you how many points are needed, so earned points = 500 - input.
+        const pointsA = 500 - ankenyInput;
+        const pointsB = 500 - waukeeInput;
+
+        const totalPoints = pointsA + pointsB;
+        let message = '';
+
+        if (totalPoints < 500) {
+          message = `Rewards: 0<br> ${500 - totalPoints} more points to earn a reward.`;
+        } else {
+          const extra = totalPoints - 500;
+          message = `Rewards: 1<br>${500 - extra} more points to earn a reward`;
+        }
+
+        document.getElementById('output').innerHTML = message;
+      }
+    </script>
+  </body>
+</html>
