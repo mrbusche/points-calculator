@@ -27,6 +27,10 @@
         background: #f0f0f0;
         border-radius: 4px;
       }
+      button {
+        margin-top: 10px;
+        padding: 8px 12px;
+      }
     </style>
   </head>
   <body>
@@ -35,7 +39,15 @@
 
       <label for="ankeny">
         Ankeny Points to Next Reward:
-        <input type="number" id="ankeny" placeholder="Enter points needed for Ankeny" min="0" max="500" oninput="calculateReward()" />
+        <input
+          type="number"
+          id="ankeny"
+          placeholder="Enter points needed for Ankeny"
+          min="0"
+          max="500"
+          oninput="calculateReward()"
+          autofocus
+        />
       </label>
 
       <label for="waukee">
@@ -44,30 +56,45 @@
       </label>
 
       <div id="output" class="result"></div>
+      <button onclick="resetCalculator()">Reset</button>
     </div>
 
     <script>
       function calculateReward() {
-        // Get the input values; default to 0 if not entered.
-        var ankenyInput = parseInt(document.getElementById('ankeny').value) || 0;
-        var waukeeInput = parseInt(document.getElementById('waukee').value) || 0;
+        const ankenyValue = document.getElementById('ankeny').value;
+        const waukeeValue = document.getElementById('waukee').value;
+
+        // Check if both fields have a value before displaying any output.
+        if (ankenyValue === '' || waukeeValue === '') {
+          document.getElementById('output').innerHTML = '';
+          return;
+        }
+
+        // Convert input values to integers.
+        var ankenyInput = parseInt(ankenyValue) || 0;
+        var waukeeInput = parseInt(waukeeValue) || 0;
 
         // Calculate points already earned per store.
         // Each system tells you how many points are needed, so earned points = 500 - input.
         const pointsA = 500 - ankenyInput;
         const pointsB = 500 - waukeeInput;
-
         const totalPoints = pointsA + pointsB;
         let message = '';
 
         if (totalPoints < 500) {
-          message = `Rewards: 0<br> ${500 - totalPoints} more points to earn a reward.`;
+          message = `Rewards: <strong>0</strong><br>Points to earn reward: <strong>${500 - totalPoints}</strong>`;
         } else {
           const extra = totalPoints - 500;
-          message = `Rewards: 1<br>${500 - extra} more points to earn a reward`;
+          message = `Rewards: <strong>1</strong><br>Points to earn reward: <strong>${500 - extra}</strong>`;
         }
 
         document.getElementById('output').innerHTML = message;
+      }
+
+      function resetCalculator() {
+        document.getElementById('ankeny').value = '';
+        document.getElementById('waukee').value = '';
+        document.getElementById('output').innerHTML = '';
       }
     </script>
   </body>
